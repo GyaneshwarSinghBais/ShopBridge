@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopbridge_base.Data;
 
 namespace Shopbridge_base.Migrations
 {
     [DbContext(typeof(Shopbridge_Context))]
-    partial class Shopbridge_ContextModelSnapshot : ModelSnapshot
+    [Migration("20220506112100_Data-Seeding with id 1")]
+    partial class DataSeedingwithid1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

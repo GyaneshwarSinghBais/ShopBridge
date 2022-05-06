@@ -18,6 +18,9 @@ using Microsoft.EntityFrameworkCore;
 using Shopbridge_base.Data;
 using Shopbridge_base.Domain.Services.Interfaces;
 using Shopbridge_base.Domain.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Shopbridge_base.Domain.Services.Implementations;
 
 namespace Shopbridge_base
 {
@@ -33,10 +36,41 @@ namespace Shopbridge_base
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+
+
+            // Adding Authentication  
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+
+            // Adding Jwt Bearer  
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    //ValidateIssuer = true,
+                    //ValidateAudience = true,
+                    //ValidAudience = Configuration["JWT:ValidAudience"],
+                    //ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWT:Secret"]))
+                };
+            });
 
             services.AddControllers();
+            services.AddSingleton<IJwtAuth>(new Auth(Configuration["JWT:Secret"]));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Shopbridge_base", Version = "v1" });

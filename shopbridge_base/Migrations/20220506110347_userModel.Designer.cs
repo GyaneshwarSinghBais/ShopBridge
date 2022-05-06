@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopbridge_base.Data;
 
 namespace Shopbridge_base.Migrations
 {
     [DbContext(typeof(Shopbridge_Context))]
-    partial class Shopbridge_ContextModelSnapshot : ModelSnapshot
+    [Migration("20220506110347_userModel")]
+    partial class userModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,18 +85,6 @@ namespace Shopbridge_base.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            id = 1,
-                            Address = "New Raipur Chhattisgarh",
-                            EmailId = "gyan@gmail.com",
-                            Mobile = "9691655520",
-                            OfficeFlag = "admin",
-                            Pwd = "gyan@123",
-                            UserName = "Gyan"
-                        });
                 });
 #pragma warning restore 612, 618
         }
